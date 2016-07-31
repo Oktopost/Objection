@@ -10,7 +10,7 @@ class InvalidEnumValueTypeException extends LiteObjectException
 	 */
 	public function __construct($enumValues, $value)
 	{
-		$expectedValues = implode(', ', $enumValues);
+		$expectedValues = implode(', ', array_flip($enumValues));
 		
 		parent::__construct("One of '$expectedValues' expected. Got '$value' instead");
 	}
