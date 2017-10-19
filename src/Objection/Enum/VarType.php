@@ -4,7 +4,7 @@ namespace Objection\Enum;
 
 class VarType 
 {
-	use \Objection\TEnum;
+	use \Traitor\TEnum;
 	
 	
 	const INT				= 'int';

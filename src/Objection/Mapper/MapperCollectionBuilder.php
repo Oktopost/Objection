@@ -12,7 +12,7 @@ use Objection\Mapper\Mappers\DummyMapper;
 
 class MapperCollectionBuilder
 {
-	use \Objection\TStaticClass;
+	use \Traitor\TStaticClass;
 	
 	
 	/**

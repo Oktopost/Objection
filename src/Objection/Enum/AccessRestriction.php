@@ -4,7 +4,7 @@ namespace Objection\Enum;
 
 class AccessRestriction
 {
-	use \Objection\TConstsClass;
+	use \Traitor\TConstsClass;
 	
 	
 	const NO_SET = 0;

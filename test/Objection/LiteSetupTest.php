@@ -9,7 +9,7 @@ use Objection\Enum\SetupFields;
 
 class Test_LiteSetup_CreateEnum_ConstsClass
 {
-	use TConstsClass;
+	use \Traitor\TConstsClass;
 
 	const A = 'a';
 	const B = 'b';
@@ -18,7 +18,7 @@ class Test_LiteSetup_CreateEnum_ConstsClass
 
 class Test_LiteSetup_CreateEnum_EnumClass
 {
-	use TEnum;
+	use \Traitor\TEnum;
 	
 	const A = 'a';
 	const B = 'b';

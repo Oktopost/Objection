@@ -8,7 +8,7 @@ use Objection\Mapper\Mappers\SnakeCaseMapper;
 
 class Mappers
 {
-	use TStaticClass;
+	use \Traitor\TStaticClass;
 	
 	
 	/**

@@ -4,9 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c68f3299804a4c355e912b73d2f3301a",
-    "content-hash": "12ead30a23d1a7c12e7499dbc3e28106",
-    "packages": [],
+    "hash": "9d0724d86fa83f91b05501100568ad84",
+    "content-hash": "5f0d1a6151eaf944a17ff292dcb3cd90",
+    "packages": [
+        {
+            "name": "unstable-cacao/traitor",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/unstable-cacao/Traitor.git",
+                "reference": "31211450441132853d30f03892642712bc77f82a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/unstable-cacao/Traitor/zipball/31211450441132853d30f03892642712bc77f82a",
+                "reference": "31211450441132853d30f03892642712bc77f82a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1-stable"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.1",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Traitor": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Puchkov",
+                    "email": "alexey.pkv@gmail.com"
+                },
+                {
+                    "name": "Marina Puchkov",
+                    "email": "marinashers@gmail.com"
+                }
+            ],
+            "time": "2017-10-10 13:16:49"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",

@@ -8,7 +8,7 @@ use Objection\Setup\Container;
 
 class ObjectFieldsContainer
 {
-	use \Objection\TSingleton;
+	use \Traitor\TSingleton;
 	
 	
 	private $lowerCaseFieldsByClassName = [];

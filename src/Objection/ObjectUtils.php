@@ -4,7 +4,7 @@ namespace Objection;
 
 class ObjectUtils
 {
-	use TStaticClass;
+	use \Traitor\TStaticClass;
 
 
 	/**

@@ -17,7 +17,7 @@ use Objection\Exceptions\LiteObjectException;
 
 class ObjectMapper
 {
-	use \Objection\TStaticClass;
+	use \Traitor\TStaticClass;
 	
 	
 	/**

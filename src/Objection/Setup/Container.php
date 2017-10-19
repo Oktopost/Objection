@@ -8,7 +8,7 @@ use Objection\Exceptions\LiteObjectException;
 
 class Container 
 {
-	use \Objection\TSingleton;
+	use \Traitor\TSingleton;
 	
 	
 	/** @var array[] */

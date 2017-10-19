@@ -26,7 +26,8 @@
     "minimum-stability": "stable",
 	
     "require": {
-		"php" : ">=5.5-stable"
+		"php" : ">=5.5-stable",
+        "unstable-cacao/traitor": "^1.0"
 	},
 	
 	"autoload": {

@@ -4,7 +4,7 @@ namespace Objection\Enum;
 
 class SetupFields 
 {
-	use \Objection\TConstsClass;
+	use \Traitor\TConstsClass;
 	
 	
 	const VALUE				= 'value';

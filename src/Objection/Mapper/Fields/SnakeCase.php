@@ -7,7 +7,7 @@ use Objection\Mapper\Base\Fields\IFieldMapper;
 
 class SnakeCase implements IFieldMapper
 {
-	use \Objection\TSingleton;
+	use \Traitor\TSingleton;
 	
 	
 	/**

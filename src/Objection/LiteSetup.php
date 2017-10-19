@@ -9,11 +9,11 @@ use Objection\Enum\SetupFields;
 
 class LiteSetup 
 {
-	use \Objection\TStaticClass;
+	use \Traitor\TStaticClass;
 	
 	
 	/**
-	 * @param TConstsClass|array $set
+	 * @param \Traitor\TConstsClass|array $set
 	 * @return mixed
 	 * @throws Exceptions\InvalidPropertySetupException
 	 */
@@ -23,14 +23,14 @@ class LiteSetup
 		{
 			$traits = class_uses($set);
 			
-			if (in_array(TConstsClass::class, $traits))
+			if (in_array(\Traitor\TConstsClass::class, $traits))
 			{
-				/** @var TConstsClass $set */
+				/** @var \Traitor\TConstsClass $set */
 				return $set::getConstValues();
 			}
-			else if (in_array(TEnum::class, $traits))
+			else if (in_array(\Traitor\TEnum::class, $traits))
 			{
-				/** @var TEnum $set */
+				/** @var \Traitor\TEnum $set */
 				return $set::getAll();
 			}
 		}

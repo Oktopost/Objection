@@ -9,7 +9,7 @@ use Objection\Enum\SetupFields;
 
 class ValueValidation 
 {
-	use \Objection\TStaticClass;
+	use \Traitor\TStaticClass;
 	
 	
 	/**
