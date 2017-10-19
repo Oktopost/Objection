@@ -23,12 +23,12 @@ class LiteSetup
 		{
 			$traits = class_uses($set);
 			
-			if (in_array(\Traitor\TConstsClass::class, $traits))
+			if (in_array(\Traitor\TConstsClass::class, $traits) || in_array(\Objection\TConstsClass::class, $traits))
 			{
 				/** @var \Traitor\TConstsClass $set */
 				return $set::getConstValues();
 			}
-			else if (in_array(\Traitor\TEnum::class, $traits))
+			else if (in_array(\Traitor\TEnum::class, $traits) || in_array(\Objection\TEnum::class, $traits))
 			{
 				/** @var \Traitor\TEnum $set */
 				return $set::getAll();
