@@ -35,5 +35,8 @@
         "psr-0": {
             "Objection": "src"
         }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.11.3"
     }
 }
