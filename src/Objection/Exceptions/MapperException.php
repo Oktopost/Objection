@@ -11,7 +11,7 @@ class MapperException extends LiteObjectException
 	public function __construct($originalData, \Exception $previous)
 	{
 		if (!is_string($originalData))
-			$originalData = json_encode($originalData);
+			$originalData = jsonencode($originalData);
 		
 		parent::__construct("An error was caught while mapping object: {$previous->getMessage()}. " . 
 			"Json of source data: '$originalData'", 42, $previous);

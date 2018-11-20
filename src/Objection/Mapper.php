@@ -186,7 +186,7 @@ class Mapper
 	 */
 	public function getJson($object, $flags = 0)
 	{
-		return json_encode($this->getData($object, new StdClassTargetBuilder()), $flags);
+		return jsonencode($this->getData($object, new StdClassTargetBuilder()), $flags);
 	}
 	
 	/**

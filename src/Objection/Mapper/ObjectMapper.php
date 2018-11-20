@@ -80,7 +80,7 @@ class ObjectMapper
 		IValuesProcessorContainer $container)
 	{
 		if (is_string($value))
-			$value = json_decode($value);
+			$value = jsondecode($value);
 		
 		$data = [];
 		$className = get_class($object);
@@ -243,7 +243,7 @@ class ObjectMapper
 	{
 		if (is_string($data))
 		{
-			$decodedData = json_decode($data);
+			$decodedData = jsondecode($data);
 			
 			if (!$decodedData)
 			{
