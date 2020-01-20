@@ -66,6 +66,32 @@ class ObjectMapper
 		return $object;
 	}
 	
+	/**
+	 * @param string $className
+	 * @param IMapperCollection $collection
+	 * @param $value
+	 * @param MapperLoadHelpers $loaders
+	 * @param IValuesProcessorContainer $container
+	 * @return LiteObject|array
+	 */
+	private static function getInstanceData(string $className, 
+		IMapperCollection $collection, 
+		$value, 
+		MapperLoadHelpers $loaders, 
+		IValuesProcessorContainer $container)
+	{
+		$reflectionClass = new \ReflectionClass($className);
+		
+		if ($reflectionClass->isInstantiable() && $reflectionClass->getConstructor()->getNumberOfRequiredParameters() == 0)
+		{
+			$instance = new $className;
+			return self::getObjectFromData($instance, $collection, $value, $loaders, $container);
+		}
+		else
+		{
+			return $value;
+		}
+	}
 	
 	/**
 	 * @param LiteObject $object
@@ -122,8 +148,7 @@ class ObjectMapper
 					}
 					else
 					{
-						$fieldValue = new $instanceType;
-						self::getObjectFromData($fieldValue, $collection, $dataValue, $loaders, $container);
+						$fieldValue = self::getInstanceData($instanceType, $collection, $dataValue, $loaders, $container);
 					}
 				}
 				else
@@ -132,9 +157,7 @@ class ObjectMapper
 					
 					foreach ($dataValue as $itemKey => $item)
 					{
-						$instance = new $instanceType;
-						self::getObjectFromData($instance, $collection, $item, $loaders, $container);
-						$fieldValue[$itemKey] = $instance;
+						$fieldValue[$itemKey] = self::getInstanceData($instanceType, $collection, $item, $loaders, $container);;
 					}
 				}
 			}
