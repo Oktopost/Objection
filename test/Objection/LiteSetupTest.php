@@ -6,6 +6,8 @@ use Objection\Enum\AccessRestriction;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 
+use PHPUnit\Framework\TestCase;
+
 
 class Test_LiteSetup_CreateEnum_ConstsClass
 {
@@ -25,7 +27,7 @@ class Test_LiteSetup_CreateEnum_EnumClass
 }
 
 
-class LiteSetupTest extends \PHPUnit_Framework_TestCase
+class LiteSetupTest extends TestCase
 {
 	private function assertCreateOfType($type, $value, $isNull, array $actual)
 	{
@@ -258,20 +260,18 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 			],
 			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_EnumClass::class));
 	}
-
-	/**
-	 * @expectedException \Objection\Exceptions\InvalidPropertySetupException
-	 */
+	
 	public function test_createEnum_InvalidClassNamePassed()
 	{
+		$this->expectException(\Objection\Exceptions\InvalidPropertySetupException::class);
+		
 		LiteSetup::createEnum('not_a_class');
 	}
-
-	/**
-	 * @expectedException \Objection\Exceptions\InvalidPropertySetupException
-	 */
+	
 	public function test_createEnum_CreateUsingNotTConstsClass()
 	{
+		$this->expectException(\Objection\Exceptions\InvalidPropertySetupException::class);
+		
 		LiteSetup::createEnum(\stdClass::class);
 	}
 	
@@ -307,19 +307,17 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($d,					$result[SetupFields::VALUE]);
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
-	 */
 	public function test_createDateTime_InvalidType_ErrorThrown()
 	{
+		$this->expectException(\Objection\Exceptions\InvalidDatetimeValueTypeException::class);
+		
 		LiteSetup::createDateTime(0.5);
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
-	 */
 	public function test_createDateTime_InvalidObject_ErrorThrown()
 	{
+		$this->expectException(\Objection\Exceptions\InvalidDatetimeValueTypeException::class);
+		
 		LiteSetup::createDateTime(new \stdClass());
 	}
 	

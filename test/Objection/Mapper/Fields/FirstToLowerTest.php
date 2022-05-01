@@ -2,7 +2,10 @@
 namespace Objection\Mapper\Fields;
 
 
-class FirstToLowerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+
+class FirstToLowerTest extends TestCase
 {
 	public function test_map_EmptyString_EmptyStringReturned()
 	{

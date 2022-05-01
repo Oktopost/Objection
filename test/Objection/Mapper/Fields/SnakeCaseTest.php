@@ -2,7 +2,10 @@
 namespace Objection\Mapper\Fields;
 
 
-class SnakeCaseTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+
+class SnakeCaseTest extends TestCase
 {
 	public function test_map_EmptyString_EmptyStringReturned()
 	{

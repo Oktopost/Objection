@@ -3,6 +3,7 @@ namespace Objection;
 
 
 use Objection\Enum\AccessRestriction;
+use PHPUnit\Framework\TestCase;
 
 
 /**
@@ -49,7 +50,7 @@ class TestObject_StateObject extends StateObject
 }
 
 
-class StateObjectTest extends \PHPUnit_Framework_TestCase
+class StateObjectTest extends TestCase
 {
 	public function test_isModified() 
 	{
@@ -61,11 +62,10 @@ class StateObjectTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($a->isModified('PropString'));
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
-	 */
-	public function test_isModified_PropertyNotFound_ErrorThrown() 
+	public function test_isModified_PropertyNotFound_ErrorThrown()
 	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		
 		$a = new TestObject_StateObject();
 		$a->isModified('NotAProperty');
 	}

@@ -26,8 +26,8 @@
     "minimum-stability": "stable",
 	
     "require": {
-		"php" : ">=5.5-stable",
-        "unstable-cacao/traitor": "^1.0",
+		"php" : ">=8.1-stable",
+        "unstable-cacao/traitor": "^2.0",
         "oktopost/jsonencode": "^1.0"
 	},
 	
@@ -37,6 +37,11 @@
         }
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.11.3"
+        "phpstan/phpstan": "^1.6.3",
+        "phpunit/phpunit": "^8.1"
+    },
+    "scripts":
+    {
+        "test": "./vendor/bin/phpunit --dont-report-useless-tests"
     }
 }
