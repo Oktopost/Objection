@@ -13,3 +13,5 @@
 # Test file
 test.php
 /*Test.php
+
+.phpunit.result.cache

@@ -29,7 +29,7 @@ class Mapper
 	private $valuesProcessor;
 	
 	
-	private function __construct() 
+	private function __construct()
 	{
 		$this->valuesProcessor = new ValuesProcessorContainer();
 		$this->loaders = new MapperLoadHelpers();
@@ -45,7 +45,7 @@ class Mapper
 		$className = ($className ?: $this->className);
 		
 		if (!$className)
-			throw new LiteObjectException("Default class name not set. See method Mapper::setDefaultClassName.");  
+			throw new LiteObjectException("Default class name not set. See method Mapper::setDefaultClassName.");
 		
 		if (!class_exists($className))
 			throw new LiteObjectException("Class $className does not exists");
@@ -85,14 +85,14 @@ class Mapper
 			return $result;
 		}
 		
-		$this->validateCollection(get_class($object));
+		$this->validateCollection(get_class($object ?? $this));
 		
 		return ObjectMapper::fromObject($object, $this->collection, $builder, $this->valuesProcessor);
 	}
 	
 	/**
 	 * @param string|LiteObject|LiteObject[] $data
-	 * @return array
+	 * @return string
 	 */
 	private static function getClassName($data)
 	{
@@ -102,11 +102,11 @@ class Mapper
 		}
 		else if ($data instanceof LiteObject)
 		{
-			return get_class(current($object));
+			return get_class(current($data));
 		}
-		else if (is_array($data) && reset($object) && reset($object) instanceof LiteObject) 
+		else if (is_array($data) && reset($data) && reset($data) instanceof LiteObject)
 		{
-			return get_class(reset($object));
+			return get_class(reset($data));
 		}
 		
 		throw new LiteObjectException('Unexpected input: Parameter must be LiteObject, LiteObject[] or string');
@@ -231,7 +231,7 @@ class Mapper
 		if (!$this->className)
 			throw new LiteObjectException("Default class name not set. See method Mapper::setDefaultClassName.");
 		
-		return $this->valuesOf($this->className); 
+		return $this->valuesOf($this->className);
 	}
 	
 	/**

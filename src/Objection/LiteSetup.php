@@ -7,7 +7,7 @@ use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 
 
-class LiteSetup 
+class LiteSetup
 {
 	use \Traitor\TStaticClass;
 	
@@ -50,20 +50,20 @@ class LiteSetup
 	public static function create($type, $default, $isNull = false, $access = false)
 	{
 		$data = [
-			SetupFields::TYPE => $type, 
+			SetupFields::TYPE => $type,
 			SetupFields::VALUE => $default
 		];
 		
 		if (is_null($default) || $isNull)
 			$data[SetupFields::IS_NULL] = true;
 		
-		if ($access !== false) 
+		if ($access !== false)
 			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
 	}
 	
-	public static function createInt($default = 0, $access = false) 
+	public static function createInt($default = 0, $access = false)
 	{
 		return self::create(VarType::INT, $default, false, $access);
 	}
@@ -78,7 +78,7 @@ class LiteSetup
 		return self::create(VarType::DOUBLE, $default, false, $access);
 	}
 	
-	public static function createBool($default = false, $access = false) 
+	public static function createBool($default = false, $access = false)
 	{
 		return self::create(VarType::BOOL, $default, false, $access);
 	}
@@ -99,7 +99,7 @@ class LiteSetup
 	{
 		$default = null;
 		
-		if (!is_string($class))
+		if (!is_string($class) && $class)
 		{
 			$default = $class;
 			$class = get_class($class);
@@ -147,7 +147,7 @@ class LiteSetup
 	{
 		if (!is_array($set))
 			$set = self::getValuesFromConstsClass($set);
-
+		
 		if ($default === false)
 			$default = $set[0];
 		
@@ -168,6 +168,13 @@ class LiteSetup
 		return $data;
 	}
 	
+	/**
+	 * @deprecated
+	 * @param string $default
+	 * @param bool $isNull
+	 * @param bool $access
+	 * @return array
+	 */
 	public static function createDateTime($default = 'now', $isNull = false, $access = false)
 	{
 		if (is_int($default))
