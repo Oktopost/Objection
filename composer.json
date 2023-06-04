@@ -27,7 +27,7 @@
 	
     "require": {
 		"php" : ">=8.1-stable",
-        "unstable-cacao/traitor": "^2.0",
+        "unstable-cacao/traitor": "^2.0.1",
         "oktopost/jsonencode": "^1.0"
 	},
 	
