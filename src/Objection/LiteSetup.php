@@ -13,7 +13,7 @@ class LiteSetup
 	
 	
 	/**
-	 * @param \Traitor\TConstsClass|array $set
+	 * @param \Traitor\TConstsClass|array|\UnitEnum $set
 	 * @return mixed
 	 * @throws Exceptions\InvalidPropertySetupException
 	 */
@@ -32,6 +32,10 @@ class LiteSetup
 			{
 				/** @var \Traitor\TEnum $set */
 				return $set::getAll();
+			}
+			else if (enum_exists($set))
+			{
+				return array_map(fn($v) => $v->value, $set::cases());
 			}
 		}
 		
@@ -142,7 +146,7 @@ class LiteSetup
 	}
 	
 	/**
-	 * @param array|string $set All possible values for this field.
+	 * @param array|string|\Traitor\TConstsClass|\UnitEnum $set All possible values for this field.
 	 * @param string|null|bool $default
 	 * @param bool $isNull
 	 * @param int|bool $access
