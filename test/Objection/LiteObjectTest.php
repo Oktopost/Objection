@@ -3,7 +3,6 @@ namespace Objection;
 
 
 use Objection\Enum\AccessRestriction;
-use PHPUnit\Framework\TestCase;
 
 
 /**
@@ -60,7 +59,7 @@ class TestObject_LiteObject extends LiteObject
 }
 
 
-class LiteObjectTest extends TestCase
+class LiteObjectTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_PropertyExists_PropertyModified() 
 	{
@@ -78,20 +77,23 @@ class LiteObjectTest extends TestCase
 		$this->assertSame("1", $o->PropString);
 	}
 	
-	public function test_PropertyDoesNotExits_ErrorThrown()
+	/**
+	 * @expectedException \Objection\Exceptions\PropertyNotFoundException 
+	 */
+	public function test_PropertyDoesNotExits_ErrorThrown() 
 	{
-		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
-		
 		$o = new TestObject_LiteObject();
 		
 		/** @noinspection PhpUndefinedFieldInspection */
 		$o->PropNone = "1";
 	}
 	
-	public function test_SetGetOnlyProperty_ErrorThrown()
+	
+	/**
+	 * @expectedException \Objection\Exceptions\ReadOnlyPropertyException 
+	 */
+	public function test_SetGetOnlyProperty_ErrorThrown() 
 	{
-		$this->expectException(\Objection\Exceptions\ReadOnlyPropertyException::class);
-		
 		$o = new TestObject_LiteObject();
 		$o->PropGetOnly = "1";
 	}
@@ -102,10 +104,12 @@ class LiteObjectTest extends TestCase
 		$this->assertEquals(0, $o->PropGetOnly);
 	}
 	
-	public function test_GetSetOnlyProperty_ErrorThrown()
+	
+	/**
+	 * @expectedException \Objection\Exceptions\WriteOnlyPropertyException
+	 */
+	public function test_GetSetOnlyProperty_ErrorThrown() 
 	{
-		$this->expectException(\Objection\Exceptions\WriteOnlyPropertyException::class);
-		
 		$o = new TestObject_LiteObject();
 		
 		/** @noinspection PhpUnusedLocalVariableInspection */

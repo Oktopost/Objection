@@ -50,22 +50,27 @@ class LiteSetup
 	public static function create($type, $default, $isNull = false, $access = false)
 	{
 		$data = [
-			SetupFields::TYPE => $type,
+			SetupFields::TYPE => $type, 
 			SetupFields::VALUE => $default
 		];
 		
 		if (is_null($default) || $isNull)
 			$data[SetupFields::IS_NULL] = true;
 		
-		if ($access !== false)
+		if ($access !== false) 
 			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
 	}
 	
-	public static function createInt($default = 0, $access = false)
+	public static function createInt($default = 0, $access = false) 
 	{
 		return self::create(VarType::INT, $default, false, $access);
+	}
+	
+	public static function createNumeric($default = 0, $access = false) 
+	{
+		return self::create(VarType::NUMERIC, $default, false, $access);
 	}
 	
 	public static function createString($default = '', $access = false)
@@ -78,7 +83,7 @@ class LiteSetup
 		return self::create(VarType::DOUBLE, $default, false, $access);
 	}
 	
-	public static function createBool($default = false, $access = false)
+	public static function createBool($default = false, $access = false) 
 	{
 		return self::create(VarType::BOOL, $default, false, $access);
 	}

@@ -74,10 +74,10 @@ class ObjectMapper
 	 * @param IValuesProcessorContainer $container
 	 * @return LiteObject|array|\ArrayAccess
 	 */
-	private static function getInstanceData(string $className,
-		IMapperCollection $collection,
-		$value,
-		MapperLoadHelpers $loaders,
+	private static function getInstanceData(string $className, 
+		IMapperCollection $collection, 
+		$value, 
+		MapperLoadHelpers $loaders, 
 		IValuesProcessorContainer $container)
 	{
 		$reflectionClass = new \ReflectionClass($className);
@@ -101,7 +101,7 @@ class ObjectMapper
 			}
 			else
 			{
-				throw new LiteObjectException("Invalid value type for field. " .
+				throw new LiteObjectException("Invalid value type for field. " . 
 					"$className must be LiteObject or \ArrayAccess with iterable value");
 			}
 		}
@@ -119,8 +119,8 @@ class ObjectMapper
 	 * @param IValuesProcessorContainer $container
 	 * @return mixed
 	 */
-	private static function getObjectFromData(LiteObject $object,
-		IMapperCollection $collection, $value, MapperLoadHelpers $loaders,
+	private static function getObjectFromData(LiteObject $object, 
+		IMapperCollection $collection, $value, MapperLoadHelpers $loaders, 
 		IValuesProcessorContainer $container)
 	{
 		if (is_string($value))
@@ -130,7 +130,7 @@ class ObjectMapper
 		$className = get_class($object);
 		$fieldMapper = $collection->getOrDefault($object);
 		$setup = Container::instance()->get(get_class($object));
-		
+	
 		$processor = new LoadHelpersProcessor();
 		$processor->setLoadersContainer($loaders);
 		
@@ -196,7 +196,7 @@ class ObjectMapper
 		return self::setFields($object, $data);
 	}
 	
-	private static function getDataFromLiteObject(IMapperCollection $collection,
+	private static function getDataFromLiteObject(IMapperCollection $collection, 
 		IObjectToTargetBuilder $builder, LiteObject $value, IValuesProcessorContainer $container)
 	{
 		$fieldMapper = $collection->getOrDefault($value);
@@ -219,8 +219,8 @@ class ObjectMapper
 		return $builder->get();
 	}
 	
-	private static function getDataFromArray(IMapperCollection $collection,
-		IObjectToTargetBuilder $builder, array $value, IValuesProcessorContainer $container)
+	private static function getDataFromArray(IMapperCollection $collection, 
+		IObjectToTargetBuilder $builder, array $value, IValuesProcessorContainer $container): array
 	{
 		$result = [];
 		
@@ -232,7 +232,7 @@ class ObjectMapper
 		return $result;
 	}
 	
-	private static function getDataFromValue(IMapperCollection $collection,
+	private static function getDataFromValue(IMapperCollection $collection, 
 		IObjectToTargetBuilder $builder, $value, IValuesProcessorContainer $container)
 	{
 		if (is_array($value))
@@ -269,7 +269,7 @@ class ObjectMapper
 	 * @param IValuesProcessorContainer $container
 	 * @return mixed
 	 */
-	public static function fromObject($object, IMapperCollection $collection,
+	public static function fromObject($object, IMapperCollection $collection, 
 		IObjectToTargetBuilder $builder, IValuesProcessorContainer $container)
 	{
 		return self::getDataFromValue($collection, $builder, $object, $container);
@@ -283,7 +283,7 @@ class ObjectMapper
 	 * @param IValuesProcessorContainer $container
 	 * @return LiteObject
 	 */
-	public static function toObject($className, $data,
+	public static function toObject($className, $data, 
 		IMapperCollection $collection, MapperLoadHelpers $loaders,
 		IValuesProcessorContainer $container)
 	{

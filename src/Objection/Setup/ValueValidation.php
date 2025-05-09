@@ -105,6 +105,21 @@ class ValueValidation
 			case VarType::INT:
 				$value = (int)$value;
 				break;
+				
+			case VarType::NUMERIC:
+				$floatValue = (float)$value;
+				$intValue = (int)$value;
+				
+				if ($intValue == $floatValue)
+				{
+					$value = $intValue;
+				}
+				else
+				{
+					$value = $floatValue;
+				}
+				
+				break;
 			
 			case VarType::STRING:
 				$value = (string)$value;

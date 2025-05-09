@@ -262,7 +262,7 @@ class Mapper
 	 */
 	public static function getStdClassFor($object, ...$mappersData)
 	{
-		return self::create(...$mappersData)->getJson($object);
+		return self::create(...$mappersData)->getStdClass($object);
 	}
 	
 	/**
@@ -276,10 +276,11 @@ class Mapper
 	}
 	
 	/**
-	 * @param string $className
+	 * @template T of LiteObject
+	 * @param class-string<T> $className
 	 * @param string|array|\stdClass $data
 	 * @param array ...$mappersData
-	 * @return LiteObject
+	 * @return T
 	 */
 	public static function getObjectFrom($className, $data, ...$mappersData)
 	{

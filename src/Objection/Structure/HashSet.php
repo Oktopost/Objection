@@ -2,7 +2,7 @@
 namespace Objection\Structure;
 
 
-class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAccess
+class HashSet implements \IteratorAggregate, \Countable, \ArrayAccess
 {
 	private $set = [];
 	
@@ -97,7 +97,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	/**
 	 * @return int
 	 */
-	public function count()
+	public function count(): int
 	{
 		return count($this->set);
 	}
@@ -122,7 +122,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
 	 * @return \Traversable
 	 */
-	public function getIterator()
+	public function getIterator(): \Traversable
 	{
 		return new \ArrayIterator($this->getKeys());
 	}
@@ -131,7 +131,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @link http://php.net/manual/en/serializable.serialize.php
 	 * @return string
 	 */
-	public function serialize()
+	public function __serialize()
 	{
 		return serialize(array_keys($this->set));
 	}
@@ -140,7 +140,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @link http://php.net/manual/en/serializable.unserialize.php
 	 * @param string $serialized
 	 */
-	public function unserialize($serialized)
+	public function __unserialize($serialized)
 	{
 		$keys = unserialize($serialized);
 		$this->set = array_combine($keys, array_fill(0, count($keys), null));
@@ -151,7 +151,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @param mixed $offset
 	 * @return bool
 	 */
-	public function offsetExists($offset)
+	public function offsetExists($offset): bool
 	{
 		return $this->has($offset);
 	}
@@ -160,7 +160,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @param string|int $offset
 	 * @return bool
 	 */
-	public function offsetGet($offset)
+	public function offsetGet($offset): mixed
 	{
 		return $this->has($offset);
 	}
@@ -169,7 +169,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	 * @param string|int $offset <p>
 	 * @param bool $value
 	 */
-	public function offsetSet($offset, $value)
+	public function offsetSet($offset, $value): void
 	{
 		if ($value)
 		{
@@ -184,7 +184,7 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAc
 	/**
 	 * @param string|int $offset
 	 */
-	public function offsetUnset($offset)
+	public function offsetUnset($offset): void
 	{
 		$this->remove($offset);
 	}

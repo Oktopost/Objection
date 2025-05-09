@@ -5,10 +5,8 @@ namespace Objection\Mapper\Mappers;
 use Objection\LiteSetup;
 use Objection\LiteObject;
 
-use PHPUnit\Framework\TestCase;
 
-
-class LiteJsonFieldsMapperTest extends TestCase
+class LiteJsonFieldsMapperTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_passFieldsAsArray()
 	{

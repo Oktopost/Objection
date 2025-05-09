@@ -74,9 +74,7 @@ class MapperCollection implements IMapperCollection
 	{
 		$className = $this->getClassName($className);
 		
-		return (isset($this->mappers[$className]) ?
-			$this->mappers[$className] :
-			null);
+		return ($this->mappers[$className] ?? null);
 	}
 	
 	/**

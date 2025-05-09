@@ -3,10 +3,9 @@ namespace Objection\Setup;
 
 
 use Objection\Enum\SetupFields;
-use PHPUnit\Framework\TestCase;
 
 
-class ContainerTest extends TestCase
+class ContainerTest extends \PHPUnit_Framework_TestCase 
 {
 	/**
      * @runInSeparateProcess
@@ -33,11 +32,10 @@ class ContainerTest extends TestCase
 	
 	/**
      * @runInSeparateProcess
-	 */
+	 * @expectedException \Objection\Exceptions\LiteObjectException
+     */
 	public function test_set_ClassAlreadyDefined_ErrorThrown()
 	{
-		$this->expectException(\Objection\Exceptions\LiteObjectException::class);
-		
 		Container::instance()->set('b', []);
 		Container::instance()->set('b', []);
 	}

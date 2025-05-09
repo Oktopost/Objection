@@ -5,10 +5,8 @@ namespace Objection\Setup;
 use Objection\LiteSetup;
 use Objection\Enum\VarType;
 
-use PHPUnit\Framework\TestCase;
 
-
-class ValueValidationTest extends TestCase
+class ValueValidationTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_fixValue_Scalars() 
 	{
@@ -61,24 +59,28 @@ class ValueValidationTest extends TestCase
 		$this->assertEquals($d, ValueValidation::fixValue(LiteSetup::createDateTime(), $timestamp));
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
 	public function test_fixValue_DateTime_InvalidTypePassed_ErrorThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidDatetimeValueTypeException::class);
-		
 		ValueValidation::fixValue(LiteSetup::createDateTime(), 0.4);
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
 	public function test_fixValue_DateTime_InvalidObjectPassed_ErrorThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidDatetimeValueTypeException::class);
-		
 		ValueValidation::fixValue(LiteSetup::createDateTime(), new \stdClass());
 	}
 	
-	public function test_fixValue_InvalidEnumValue_ThrowException()
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidEnumValueTypeException
+	 */
+	public function test_fixValue_InvalidEnumValue_ThrowException() 
 	{
-		$this->expectException(\Objection\Exceptions\InvalidEnumValueTypeException::class);
-		
 		ValueValidation::fixValue(LiteSetup::createEnum(['a', 'b']), 'c');
 	}
 	
@@ -109,34 +111,38 @@ class ValueValidationTest extends TestCase
 		$this->assertEquals([$this, $this], ValueValidation::fixValue($setup, [$this, $this]));
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
 	public function test_fixValue_InstanceArray_InvalidInstanceType_ExceptionThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidValueTypeException::class);
-		
 		$setup = LiteSetup::createInstanceArray(self::class);
 		ValueValidation::fixValue($setup, new \stdClass());
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
 	public function test_fixValue_InstanceArray_ScalarType_ExceptionThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidValueTypeException::class);
-		
 		$setup = LiteSetup::createInstanceArray(self::class);
 		ValueValidation::fixValue($setup, true);
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
 	public function test_fixValue_InstanceArray_ArrayWithOneInvalidInstanceType_ExceptionThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidValueTypeException::class);
-		
 		$setup = LiteSetup::createInstanceArray(self::class);
 		ValueValidation::fixValue($setup, [$this, new \stdClass(), $this]);
 	}
 	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
 	public function test_fixValue_InstanceArray_ArrayWithOneScalar_ExceptionThrown()
 	{
-		$this->expectException(\Objection\Exceptions\InvalidValueTypeException::class);
-		
 		$setup = LiteSetup::createInstanceArray(self::class);
 		ValueValidation::fixValue($setup, [$this, "hello", $this]);
 	}
@@ -156,10 +162,11 @@ class ValueValidationTest extends TestCase
 		$this->assertSame($this, ValueValidation::fixValue(LiteSetup::createInstanceOf(self::class), $this));
 	}
 	
-	public function test_fixValue_InvalidInstanceType_ExceptionThrown()
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
+	public function test_fixValue_InvalidInstanceType_ExceptionThrown() 
 	{
-		$this->expectException(\Objection\Exceptions\InvalidValueTypeException::class);
-		
 		ValueValidation::fixValue(LiteSetup::createInstanceOf(self::class), new \stdClass());
 	}
 }

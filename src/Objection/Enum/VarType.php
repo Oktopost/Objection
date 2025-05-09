@@ -8,6 +8,7 @@ class VarType
 	
 	
 	const INT				= 'int';
+	const NUMERIC			= 'numeric';
 	const STRING			= 'string';
 	const DOUBLE			= 'double';
 	const BOOL				= 'bool';

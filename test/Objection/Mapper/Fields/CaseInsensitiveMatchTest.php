@@ -3,10 +3,7 @@ namespace Objection\Mapper\Fields;
 
 
 
-use PHPUnit\Framework\TestCase;
-
-
-class CaseInsensitiveMatchTest extends TestCase
+class CaseInsensitiveMatchTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_map_NotFound_ReturnEmptyString()
 	{

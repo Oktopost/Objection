@@ -2,10 +2,7 @@
 namespace Objection\Structure;
 
 
-use PHPUnit\Framework\TestCase;
-
-
-class HashSetTest extends TestCase
+class HashSetTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_constructor()
 	{
