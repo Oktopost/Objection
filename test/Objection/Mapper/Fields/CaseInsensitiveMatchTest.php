@@ -1,9 +1,9 @@
 <?php
 namespace Objection\Mapper\Fields;
 
+use PHPUnit\Framework\TestCase;
 
-
-class CaseInsensitiveMatchTest extends \PHPUnit_Framework_TestCase
+class CaseInsensitiveMatchTest extends TestCase
 {
 	public function test_map_NotFound_ReturnEmptyString()
 	{

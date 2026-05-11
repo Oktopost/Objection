@@ -3,16 +3,14 @@ namespace Objection\Mapper\Mappers;
 
 
 use Objection\Mapper\Base\Fields\IFieldMapper;
+use PHPUnit\Framework\TestCase;
 
 
-class CombinedMapperTest extends \PHPUnit_Framework_TestCase
+class CombinedMapperTest extends TestCase
 {
-	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|IFieldMapper
-	 */
 	private function mockIFieldMapper()
 	{
-		return $this->getMock(IFieldMapper::class);
+		return $this->createMock(IFieldMapper::class);
 	}
 	
 	

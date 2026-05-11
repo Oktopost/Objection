@@ -1,8 +1,9 @@
 <?php
 namespace Objection\Mapper\Fields;
 
+use PHPUnit\Framework\TestCase;
 
-class SnakeCaseTest extends \PHPUnit_Framework_TestCase
+class SnakeCaseTest extends TestCase
 {
 	public function test_map_EmptyString_EmptyStringReturned()
 	{
