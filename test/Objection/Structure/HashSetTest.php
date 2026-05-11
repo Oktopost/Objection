@@ -1,8 +1,9 @@
 <?php
 namespace Objection\Structure;
 
+use PHPUnit\Framework\TestCase;
 
-class HashSetTest extends \PHPUnit_Framework_TestCase
+class HashSetTest extends TestCase
 {
 	public function test_constructor()
 	{
@@ -222,11 +223,7 @@ class HashSetTest extends \PHPUnit_Framework_TestCase
 	public function test_getIterator_Empty()
 	{
 		$h = new HashSet();
-		
-		foreach ($h as $key)
-		{
-			$this->fail('Should be empty, got: ' . $key);
-		}
+		$this->assertSame([], iterator_to_array($h->getIterator(), false));
 	}
 	
 	public function test_getIterator_NotEmpty()

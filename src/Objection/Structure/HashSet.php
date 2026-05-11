@@ -128,21 +128,21 @@ class HashSet implements \IteratorAggregate, \Countable, \ArrayAccess
 	}
 	
 	/**
-	 * @link http://php.net/manual/en/serializable.serialize.php
-	 * @return string
+	 * @link http://php.net/manual/en/language.oop5.magic.php#object.serialize
+	 * @return array
 	 */
 	public function __serialize()
 	{
-		return serialize(array_keys($this->set));
+		return ['keys' => array_keys($this->set)];
 	}
 	
 	/**
-	 * @link http://php.net/manual/en/serializable.unserialize.php
-	 * @param string $serialized
+	 * @link http://php.net/manual/en/language.oop5.magic.php#object.unserialize
+	 * @param array $serialized
 	 */
-	public function __unserialize($serialized)
+	public function __unserialize(array $serialized)
 	{
-		$keys = unserialize($serialized);
+		$keys = $serialized['keys'] ?? [];
 		$this->set = array_combine($keys, array_fill(0, count($keys), null));
 	}
 	

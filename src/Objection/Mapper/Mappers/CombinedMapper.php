@@ -18,8 +18,8 @@ class CombinedMapper implements IBidirectionalMapper
 	 * @param IFieldMapper|null $toObject
 	 */
 	public function __construct(
-		IFieldMapper $fromObject = null, 
-		IFieldMapper $toObject = null) 
+		?IFieldMapper $fromObject = null,
+		?IFieldMapper $toObject = null)
 	{
 		$this->fromObject = $fromObject;
 		$this->toObject = $toObject;

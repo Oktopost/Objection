@@ -126,7 +126,8 @@ class ValueValidation
 				break;
 			
 			case VarType::DOUBLE:
-				$value = (double)$value;
+			case VarType::FLOAT:
+				$value = (float)$value;
 				break;
 			
 			case VarType::ARR:

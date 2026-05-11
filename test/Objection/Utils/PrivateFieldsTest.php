@@ -5,15 +5,14 @@ namespace Objection\Utils;
 use Objection\LiteSetup;
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
+use PHPUnit\Framework\TestCase;
 
 
-class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
+class PrivateFieldsTest extends TestCase
 {
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_get_NoProperty_ErrorThrown() 
 	{
+		$this->expectException(\Exception::class);
 		$data = [];
 		$values = [];
 		$p = new PrivateFields($values, $data, $this);
@@ -54,11 +53,9 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_set_NoProperty_ErrorThrown() 
 	{
+		$this->expectException(\Exception::class);
 		$values = [];
 		$p = new PrivateFields($values, [], $this);
 		$p->n = 5;

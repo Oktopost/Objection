@@ -5,6 +5,7 @@ namespace Objection\Utils;
 use Objection\LiteObject;
 use Objection\LiteSetup;
 use Objection\Enum\AccessRestriction;
+use PHPUnit\Framework\TestCase;
 
 
 /**
@@ -52,7 +53,7 @@ class TestObject_ArrayParser extends LiteObject
 
 
 
-class ArrayParserTest extends \PHPUnit_Framework_TestCase
+class ArrayParserTest extends TestCase
 {
 	public function test_toArray()
 	{
@@ -99,11 +100,9 @@ class ArrayParserTest extends \PHPUnit_Framework_TestCase
 			ArrayParser::toArray($o, [], ['OnSetProperty', 'PropString']));
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
-	 */
 	public function test_toArray_FilterForInvalidProperty_ErrorThrown()
 	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
 		$o = new TestObject_ArrayParser();
 		ArrayParser::toArray($o, ['a']);
 	}
@@ -134,11 +133,9 @@ class ArrayParserTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame("A", $o->PropString);
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
-	 */
 	public function test_fromArray_DoesNotExists_ErrorThrown()
 	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
 		$o = new TestObject_ArrayParser();
 		ArrayParser::fromArray($o, ['dd' => "5"]);
 	}
@@ -149,11 +146,9 @@ class ArrayParserTest extends \PHPUnit_Framework_TestCase
 		ArrayParser::fromArray($o, ['PropGetOnly' => "5"]);
 	}
 	
-	/**
-	 * @expectedException \Objection\Exceptions\ReadOnlyPropertyException
-	 */
 	public function test_fromArray_IgnoreFlagIsFalse_GetOnlyPropertyNotIgnored()
 	{
+		$this->expectException(\Objection\Exceptions\ReadOnlyPropertyException::class);
 		$o = new TestObject_ArrayParser();
 		ArrayParser::fromArray($o, ['PropGetOnly' => "5"], false);
 	}

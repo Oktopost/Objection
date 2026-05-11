@@ -11,6 +11,7 @@ class VarType
 	const NUMERIC			= 'numeric';
 	const STRING			= 'string';
 	const DOUBLE			= 'double';
+	const FLOAT				= 'float';
 	const BOOL				= 'bool';
 	const MIXED				= 'mixed';
 	const ENUM				= 'enum';
