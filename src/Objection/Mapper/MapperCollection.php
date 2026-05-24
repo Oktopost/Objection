@@ -31,7 +31,7 @@ class MapperCollection implements IMapperCollection
 	/**
 	 * @param IBidirectionalMapper|null $default
 	 */
-	public function __construct(IBidirectionalMapper $default = null)
+	public function __construct(?IBidirectionalMapper $default = null)
 	{
 		$this->default = $default;
 	}
