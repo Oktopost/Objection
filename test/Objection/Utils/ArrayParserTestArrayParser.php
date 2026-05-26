@@ -218,4 +218,30 @@ class ArrayParserTest extends TestCase
 		$this->assertEquals($a->toArray(), $result[0]->toArray());
 		$this->assertEquals($b->toArray(), $result[1]->toArray());
 	}
+	
+	public function test_allFromArray_UnknownProperty_ErrorThrown()
+	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		$a = new TestObject_ArrayParser(['PropString' => 'str1']);
+		$data = [$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true]];
+		
+		ArrayParser::allFromArray(TestObject_ArrayParser::class, $data);
+	}
+	
+	public function test_allFromArrayFiltered()
+	{
+		$a = new TestObject_ArrayParser(['PropString' => 'str1']);
+		$b = new TestObject_ArrayParser(['PropString' => 'str2']);
+		
+		$data = [
+			$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true],
+			$b->toArray([], ['PropInt', 'PropGetOnly']) + ['UnknownProperty' => true]
+		];
+		
+		$result = ArrayParser::allFromArrayFiltered(TestObject_ArrayParser::class, $data);
+		
+		$this->assertCount(2, $result);
+		$this->assertEquals($a->toArray(), $result[0]->toArray());
+		$this->assertEquals($b->toArray(), $result[1]->toArray());
+	}
 }

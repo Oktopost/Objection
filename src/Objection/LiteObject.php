@@ -64,6 +64,14 @@ abstract class LiteObject
 		}
 	}
 	
+	/**
+	 * Keep only declared object fields before tolerant hydration.
+	 */
+	private function filterArrayForHydration(array|\stdClass $source): array
+	{
+		return array_intersect_key((array)$source, $this->data);
+	}
+	
 	
 	/**
 	 * @return array
@@ -93,6 +101,19 @@ abstract class LiteObject
 	public function fromArray($source, $ignoreGetOnly = true)
 	{
 		ArrayParser::fromArray($this, $source, $ignoreGetOnly);
+		return $this;
+	}
+	
+	/**
+	 * Hydrate declared fields and ignore unknown source keys.
+	 * 
+	 * @param array|\stdClass $source
+	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
+	 * @return static
+	 */
+	public function fromArrayFiltered(array|\stdClass $source, bool $ignoreGetOnly = true): static
+	{
+		$this->fromArray($this->filterArrayForHydration($source), $ignoreGetOnly);
 		return $this;
 	}
 	
@@ -215,5 +236,16 @@ abstract class LiteObject
 	public static function allFromArray(array $mapsSet)
 	{
 		return ArrayParser::allFromArray(static::class, $mapsSet);
+	}
+	
+	/**
+	 * Hydrate multiple objects while ignoring unknown source keys.
+	 * 
+	 * @param array $mapsSet
+	 * @return LiteObject[]
+	 */
+	public static function allFromArrayFiltered(array $mapsSet): array
+	{
+		return ArrayParser::allFromArrayFiltered(static::class, $mapsSet);
 	}
 }

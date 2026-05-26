@@ -228,6 +228,32 @@ class LiteObjectTest extends TestCase
 		$this->assertSame("A", $o->PropString);
 	}
 	
+	public function test_fromArray_UnknownProperty_ErrorThrown()
+	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		$o = new TestObject_LiteObject();
+		
+		$o->fromArray(['PropInt' => "5", 'UnknownProperty' => true]);
+	}
+	
+	public function test_fromArrayFiltered_SkipsUnknownProperties()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArrayFiltered(['PropInt' => "5", 'PropString' => "A", 'UnknownProperty' => true]);
+		
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+	
+	public function test_fromArrayFiltered_ParameterIsObject()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArrayFiltered((object)['PropInt' => "5", 'PropString' => "A", 'UnknownProperty' => true]);
+		
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+	
 	public function test_allToArray_Sanity()
 	{
 		$data = [new TestObject_LiteObject(['PropString' => 'str1'])];
@@ -243,6 +269,27 @@ class LiteObjectTest extends TestCase
 		$data = [$a->toArray([], ['PropGetOnly'])];
 		
 		$result = TestObject_LiteObject::allFromArray($data);
+		
+		$this->assertCount(1, $result);
+		$this->assertInstanceOf(TestObject_LiteObject::class, $result[0]);
+		$this->assertEquals($a->toArray(), $result[0]->toArray());
+	}
+	
+	public function test_allFromArray_UnknownProperty_ErrorThrown()
+	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		$a = new TestObject_LiteObject(['PropString' => 'str1']);
+		$data = [$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true]];
+		
+		TestObject_LiteObject::allFromArray($data);
+	}
+	
+	public function test_allFromArrayFiltered_Sanity()
+	{
+		$a = new TestObject_LiteObject(['PropString' => 'str1']);
+		$data = [$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true]];
+		
+		$result = TestObject_LiteObject::allFromArrayFiltered($data);
 		
 		$this->assertCount(1, $result);
 		$this->assertInstanceOf(TestObject_LiteObject::class, $result[0]);

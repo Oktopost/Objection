@@ -110,4 +110,25 @@ class ArrayParser
 		
 		return $mapsSet;
 	}
+	
+	/**
+	 * Hydrate multiple objects through LiteObject's filtered hydration path.
+	 * 
+	 * @param string $className
+	 * @param array $mapsSet
+	 * @return LiteObject[]
+	 */
+	public static function allFromArrayFiltered(string $className, array $mapsSet): array
+	{
+		array_walk($mapsSet,
+			function(&$map)
+				use ($className)
+			{
+				/** @var LiteObject $object */
+				$object = new $className;
+				$map = $object->fromArrayFiltered($map);
+			});
+		
+		return $mapsSet;
+	}
 }
