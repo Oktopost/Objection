@@ -42,12 +42,18 @@ class LiteSetupTest extends TestCase
 		$this->assertTrue($data[SetupFields::ACCESS][$expectedRestriction]);
 	}
 	
+	private function assertDoesNotHaveAccessRestriction($data)
+	{
+		$this->assertArrayNotHasKey(SetupFields::ACCESS, $data);
+	}
+	
 	
 	public function test_createInt()
 	{
 		$this->assertCreateOfType(VarType::INT, 0, false, LiteSetup::createInt());
 		$this->assertCreateOfType(VarType::INT, -123, false, LiteSetup::createInt(-123));
 		$this->assertCreateOfType(VarType::INT, null, true, LiteSetup::createInt(null));
+		$this->assertDoesNotHaveAccessRestriction(LiteSetup::createInt(0, null));
 		
 		$this->assertHasAccessRestriction(
 			AccessRestriction::NO_GET, 
@@ -157,6 +163,12 @@ class LiteSetupTest extends TestCase
 			LiteSetup::createInstanceOf($this, AccessRestriction::NO_SET));
 	}
 	
+	public function test_createInstanceOf_WithoutAccessRestriction()
+	{
+		$this->assertDoesNotHaveAccessRestriction(
+			LiteSetup::createInstanceOf($this, null));
+	}
+	
 	public function test_create()
 	{
 		$this->assertCreateOfType(VarType::BOOL, 12, false, LiteSetup::create(VarType::BOOL, 12, false));
@@ -171,7 +183,10 @@ class LiteSetupTest extends TestCase
 	public function test_create_WithoutAccess()
 	{
 		$without = LiteSetup::create(VarType::BOOL, 12, false, false);
-		$this->assertTrue(!isset($without[SetupFields::ACCESS]));
+		$this->assertDoesNotHaveAccessRestriction($without);
+		
+		$without = LiteSetup::create(VarType::BOOL, 12, false, null);
+		$this->assertDoesNotHaveAccessRestriction($without);
 	}
 	
 	public function test_create_WithAccess()
@@ -231,7 +246,10 @@ class LiteSetupTest extends TestCase
 	public function test_createEnum_WithoutAccessRestriction()
 	{
 		$result = LiteSetup::createEnum(['a', 'b', 'c']);
-		$this->assertTrue(!isset($result[SetupFields::ACCESS]));
+		$this->assertDoesNotHaveAccessRestriction($result);
+		
+		$result = LiteSetup::createEnum(['a', 'b', 'c'], 'a', false, null);
+		$this->assertDoesNotHaveAccessRestriction($result);
 	}
 	
 	public function test_createEnum_WithAccessRestriction()
@@ -342,6 +360,12 @@ class LiteSetupTest extends TestCase
 				SetupFields::INSTANCE_TYPE	=> self::class
 			],
 			LiteSetup::createInstanceArray(self::class));
+	}
+	
+	public function test_createInstanceArray_WithoutAccessRestriction()
+	{
+		$this->assertDoesNotHaveAccessRestriction(
+			LiteSetup::createInstanceArray(self::class, null));
 	}
 	
 	public function test_createInstanceArray_RestrictedAccess_NoGet()

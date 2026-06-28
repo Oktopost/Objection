@@ -43,6 +43,11 @@ class LiteSetup
 			'createEnum accepts only array of values, TConstsClass class or TEnum class');
 	}
 	
+	private static function hasAccessRestriction($access)
+	{
+		return $access !== false && $access !== null;
+	}
+	
 	
 	/**
 	 * @param string $type
@@ -61,7 +66,7 @@ class LiteSetup
 		if (is_null($default) || $isNull)
 			$data[SetupFields::IS_NULL] = true;
 		
-		if ($access !== false) 
+		if (self::hasAccessRestriction($access))
 			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
@@ -121,7 +126,7 @@ class LiteSetup
 			SetupFields::INSTANCE_TYPE	=> $class
 		];
 		
-		if ($access !== false)
+		if (self::hasAccessRestriction($access))
 		{
 			$data[SetupFields::ACCESS] = [$access => true];
 		}
@@ -137,7 +142,7 @@ class LiteSetup
 			SetupFields::INSTANCE_TYPE	=> $class
 		];
 		
-		if ($access !== false)
+		if (self::hasAccessRestriction($access))
 		{
 			$data[SetupFields::ACCESS] = [$access => true];
 		}
@@ -171,7 +176,7 @@ class LiteSetup
 		if (is_null($default) || $isNull)
 			$data[SetupFields::IS_NULL] = true;
 		
-		if ($access !== false)
+		if (self::hasAccessRestriction($access))
 			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
