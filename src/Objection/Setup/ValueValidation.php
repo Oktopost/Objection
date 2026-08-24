@@ -137,9 +137,9 @@ class ValueValidation
 				break;
 			
 			case VarType::ENUM:
-				if (!isset($fieldData[SetupFields::VALUES_SET][$value]))
+				if (is_null($value) || !isset($fieldData[SetupFields::VALUES_SET][$value]))
 					throw new Exceptions\InvalidEnumValueTypeException($fieldData[SetupFields::VALUES_SET], $value);
-				
+
 				break;
 			
 			case VarType::DATE_TIME:

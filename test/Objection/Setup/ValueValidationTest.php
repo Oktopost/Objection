@@ -78,6 +78,40 @@ class ValueValidationTest extends TestCase
 		$this->expectException(\Objection\Exceptions\InvalidEnumValueTypeException::class);
 		ValueValidation::fixValue(LiteSetup::createEnum(['a', 'b']), 'c');
 	}
+
+	public function test_fixValue_NullEnumValueOnNotNullField_ThrowException()
+	{
+		$this->expectException(\Objection\Exceptions\InvalidEnumValueTypeException::class);
+		ValueValidation::fixValue(LiteSetup::createEnum(['a', 'b']), null);
+	}
+
+	public function test_fixValue_NullEnumValueOnNotNullField_NoDeprecationRaised()
+	{
+		$raised = [];
+
+		set_error_handler(
+			function($errno, $errstr) use (&$raised)
+			{
+				$raised[] = $errstr;
+				return true;
+			},
+			E_DEPRECATED | E_USER_DEPRECATED);
+
+		try
+		{
+			ValueValidation::fixValue(LiteSetup::createEnum(['a', 'b']), null);
+		}
+		catch (\Objection\Exceptions\InvalidEnumValueTypeException)
+		{
+			// Expected: the point of this test is what is *not* raised on the way out.
+		}
+		finally
+		{
+			restore_error_handler();
+		}
+
+		$this->assertEquals([], $raised);
+	}
 	
 	
 	public function test_fixValue_InstanceArray_FalsePassed_EmptyArrayReturned()
