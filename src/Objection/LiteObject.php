@@ -115,6 +115,8 @@ abstract class LiteObject
 	 * Every hydration path (fromArray, fromArrayFiltered, the all* methods) goes through this method,
 	 * so this is the one to override. An override must call parent::fromArrayStrict(), not
 	 * parent::fromArray() or $this->fromArray(): those call back into this method and recurse forever.
+	 * A subclass that still overrides fromArray() must move that override here first: fromArrayStrict()
+	 * and allFromArrayStrict() do not call fromArray(), so they skip it silently.
 	 *
 	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
