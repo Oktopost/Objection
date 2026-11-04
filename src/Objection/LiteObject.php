@@ -94,13 +94,29 @@ abstract class LiteObject
 	
 	
 	/**
+	 * @deprecated Strict, but the name does not say so. For DB rows and other sources that may gain
+	 * 	fields use fromArrayFiltered() (preferred, safe when a column is added). Use fromArrayStrict()
+	 * 	only when strict validation of the source is really needed. Subclasses that customize hydration
+	 * 	should override fromArrayStrict(), which every hydration path goes through.
 	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
 	 * @return static
 	 */
 	public function fromArray($source, $ignoreGetOnly = true)
 	{
-		ArrayParser::fromArray($this, $source, $ignoreGetOnly);
+		return $this->fromArrayStrict($source, $ignoreGetOnly);
+	}
+
+	/**
+	 * Hydrate declared fields and throw on an unknown source key.
+	 *
+	 * @param array|\stdClass $source
+	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
+	 * @return static
+	 */
+	public function fromArrayStrict($source, $ignoreGetOnly = true): static
+	{
+		ArrayParser::fromArrayStrict($this, $source, $ignoreGetOnly);
 		return $this;
 	}
 	
@@ -230,12 +246,26 @@ abstract class LiteObject
 	}
 	
 	/**
+	 * @deprecated Strict, but the name does not say so. For DB rows and other sources that may gain
+	 * 	fields use allFromArrayFiltered() (preferred, safe when a column is added). Use allFromArrayStrict()
+	 * 	only when strict validation of the source is really needed.
 	 * @param array $mapsSet
 	 * @return LiteObject[]
 	 */
 	public static function allFromArray(array $mapsSet)
 	{
 		return ArrayParser::allFromArray(static::class, $mapsSet);
+	}
+
+	/**
+	 * Hydrate multiple objects and throw on an unknown source key.
+	 *
+	 * @param array $mapsSet
+	 * @return static[]
+	 */
+	public static function allFromArrayStrict(array $mapsSet): array
+	{
+		return ArrayParser::allFromArrayStrict(static::class, $mapsSet);
 	}
 	
 	/**

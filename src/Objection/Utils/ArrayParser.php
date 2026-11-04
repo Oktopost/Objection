@@ -21,12 +21,26 @@ class ArrayParser
 	
 	
 	/**
+	 * @deprecated Strict, but the name does not say so. For DB rows and other sources that may gain
+	 * 	fields use fromArrayFiltered() (preferred, safe when a column is added). Use fromArrayStrict()
+	 * 	only when strict validation of the source is really needed.
 	 * @param LiteObject $object
 	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
-	 * @return static
 	 */
 	public static function fromArray(LiteObject $object, $source, $ignoreGetOnly = true)
+	{
+		self::fromArrayStrict($object, $source, $ignoreGetOnly);
+	}
+
+	/**
+	 * Set every source key on the object; an unknown key throws.
+	 *
+	 * @param LiteObject $object
+	 * @param array|\stdClass $source
+	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
+	 */
+	public static function fromArrayStrict(LiteObject $object, $source, $ignoreGetOnly = true): void
 	{
 		$objectSetup = self::getObjectSetup($object);
 		
@@ -93,6 +107,21 @@ class ArrayParser
 	}
 	
 	/**
+	 * Hydrate the object through LiteObject's filtered path: unknown source keys are ignored.
+	 *
+	 * @param LiteObject $object
+	 * @param array|\stdClass $source
+	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
+	 */
+	public static function fromArrayFiltered(LiteObject $object, array|\stdClass $source, bool $ignoreGetOnly = true): void
+	{
+		$object->fromArrayFiltered($source, $ignoreGetOnly);
+	}
+
+	/**
+	 * @deprecated Strict, but the name does not say so. For DB rows and other sources that may gain
+	 * 	fields use allFromArrayFiltered() (preferred, safe when a column is added). Use allFromArrayStrict()
+	 * 	only when strict validation of the source is really needed.
 	 * @param string $className
 	 * @param array $mapsSet
 	 * @return LiteObject[]
@@ -111,6 +140,27 @@ class ArrayParser
 		return $mapsSet;
 	}
 	
+	/**
+	 * Hydrate multiple objects through LiteObject's strict hydration path.
+	 *
+	 * @param string $className
+	 * @param array $mapsSet
+	 * @return LiteObject[]
+	 */
+	public static function allFromArrayStrict(string $className, array $mapsSet): array
+	{
+		array_walk($mapsSet,
+			function(&$map)
+				use ($className)
+			{
+				/** @var LiteObject $object */
+				$object = new $className;
+				$map = $object->fromArrayStrict($map);
+			});
+
+		return $mapsSet;
+	}
+
 	/**
 	 * Hydrate multiple objects through LiteObject's filtered hydration path.
 	 * 

@@ -53,9 +53,79 @@ class TestObject_LiteObject extends LiteObject
 		return $this->_p;
 	}
 	
-	public function onSetOnSetProperty($value) 
+	public function onSetOnSetProperty($value)
 	{
 		$this->onSetValue = $value;
+	}
+}
+
+/**
+ * @property string $Name
+ */
+class TestObject_LiteObject_StrictOverride extends LiteObject
+{
+	protected function _setup()
+	{
+		return [
+			'Name' => LiteSetup::createString()
+		];
+	}
+
+	public function fromArrayStrict($source, $ignoreGetOnly = true): static
+	{
+		$result = parent::fromArrayStrict($source, $ignoreGetOnly);
+		$result->Name = trim($result->Name);
+
+		return $result;
+	}
+}
+
+/**
+ * @property string $Name
+ */
+class TestObject_LiteObject_HydrationSpy extends LiteObject
+{
+	public array $calls = [];
+
+
+	protected function _setup()
+	{
+		return [
+			'Name' => LiteSetup::createString()
+		];
+	}
+
+	public function fromArray($source, $ignoreGetOnly = true)
+	{
+		$this->calls[] = 'fromArray';
+		return parent::fromArray($source, $ignoreGetOnly);
+	}
+
+	public function fromArrayStrict($source, $ignoreGetOnly = true): static
+	{
+		$this->calls[] = 'fromArrayStrict';
+		return parent::fromArrayStrict($source, $ignoreGetOnly);
+	}
+}
+
+/**
+ * @property string $Name
+ */
+class TestObject_LiteObject_FromArrayOverride extends LiteObject
+{
+	protected function _setup()
+	{
+		return [
+			'Name' => LiteSetup::createString()
+		];
+	}
+
+	public function fromArray($source, $ignoreGetOnly = true)
+	{
+		$result = parent::fromArray($source, $ignoreGetOnly);
+		$result->Name = trim($result->Name);
+
+		return $result;
 	}
 }
 
@@ -290,9 +360,137 @@ class LiteObjectTest extends TestCase
 		$data = [$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true]];
 		
 		$result = TestObject_LiteObject::allFromArrayFiltered($data);
-		
+
 		$this->assertCount(1, $result);
 		$this->assertInstanceOf(TestObject_LiteObject::class, $result[0]);
 		$this->assertEquals($a->toArray(), $result[0]->toArray());
+	}
+
+	public function test_fromArray_ParameterIsTraversable_StillAccepted()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArray(new \ArrayObject(['PropInt' => "5", 'PropString' => "A"]));
+
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+
+	public function test_fromArrayStrict_Sanity()
+	{
+		$o = new TestObject_LiteObject();
+		$result = $o->fromArrayStrict(['PropInt' => "5", 'PropString' => "A"]);
+
+		$this->assertSame($o, $result);
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+
+	public function test_fromArrayStrict_UnknownProperty_ErrorThrown()
+	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		$o = new TestObject_LiteObject();
+
+		$o->fromArrayStrict(['PropInt' => "5", 'UnknownProperty' => true]);
+	}
+
+	public function test_fromArrayStrict_ParameterIsObject()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArrayStrict((object)['PropInt' => "5", 'PropString' => "A"]);
+
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+
+	public function test_fromArrayStrict_GetOnlyProperty_Ignored()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArrayStrict(['PropInt' => "5", 'PropGetOnly' => "7"]);
+
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame(0, $o->PropGetOnly);
+	}
+
+	public function test_fromArrayStrict_IgnoreFlagIsFalse_GetOnlyPropertyNotIgnored()
+	{
+		$this->expectException(\Objection\Exceptions\ReadOnlyPropertyException::class);
+		$o = new TestObject_LiteObject();
+
+		$o->fromArrayStrict(['PropGetOnly' => "7"], false);
+	}
+
+	public function test_allFromArrayStrict_Sanity()
+	{
+		$a = new TestObject_LiteObject(['PropString' => 'str1']);
+		$data = [$a->toArray([], ['PropGetOnly'])];
+
+		$result = TestObject_LiteObject::allFromArrayStrict($data);
+
+		$this->assertCount(1, $result);
+		$this->assertInstanceOf(TestObject_LiteObject::class, $result[0]);
+		$this->assertEquals($a->toArray(), $result[0]->toArray());
+	}
+
+	public function test_allFromArrayStrict_UnknownProperty_ErrorThrown()
+	{
+		$this->expectException(\Objection\Exceptions\PropertyNotFoundException::class);
+		$a = new TestObject_LiteObject(['PropString' => 'str1']);
+		$data = [$a->toArray([], ['PropGetOnly']) + ['UnknownProperty' => true]];
+
+		TestObject_LiteObject::allFromArrayStrict($data);
+	}
+
+	public function test_fromArray_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$o = (new TestObject_LiteObject_StrictOverride())->fromArray(['Name' => ' a ']);
+		$this->assertSame('a', $o->Name);
+	}
+
+	public function test_fromArrayStrict_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$o = (new TestObject_LiteObject_StrictOverride())->fromArrayStrict(['Name' => ' a ']);
+		$this->assertSame('a', $o->Name);
+	}
+
+	public function test_fromArrayFiltered_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$o = (new TestObject_LiteObject_StrictOverride())->fromArrayFiltered(['Name' => ' a ', 'UnknownProperty' => true]);
+		$this->assertSame('a', $o->Name);
+	}
+
+	public function test_allFromArray_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$result = TestObject_LiteObject_StrictOverride::allFromArray([['Name' => ' a ']]);
+		$this->assertSame('a', $result[0]->Name);
+	}
+
+	public function test_allFromArrayStrict_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$result = TestObject_LiteObject_StrictOverride::allFromArrayStrict([['Name' => ' a ']]);
+		$this->assertSame('a', $result[0]->Name);
+	}
+
+	public function test_allFromArrayFiltered_FromArrayStrictOverridden_OverrideApplied()
+	{
+		$result = TestObject_LiteObject_StrictOverride::allFromArrayFiltered([['Name' => ' a ', 'UnknownProperty' => true]]);
+		$this->assertSame('a', $result[0]->Name);
+	}
+
+	public function test_allFromArrayStrict_CallsFromArrayStrictDirectly()
+	{
+		$result = TestObject_LiteObject_HydrationSpy::allFromArrayStrict([['Name' => 'a']]);
+		$this->assertSame(['fromArrayStrict'], $result[0]->calls);
+	}
+
+	public function test_fromArrayFiltered_FromArrayOverridden_OverrideApplied()
+	{
+		$o = (new TestObject_LiteObject_FromArrayOverride())->fromArrayFiltered(['Name' => ' a ', 'UnknownProperty' => true]);
+		$this->assertSame('a', $o->Name);
+	}
+
+	public function test_allFromArrayFiltered_FromArrayOverridden_OverrideApplied()
+	{
+		$result = TestObject_LiteObject_FromArrayOverride::allFromArrayFiltered([['Name' => ' a ', 'UnknownProperty' => true]]);
+		$this->assertSame('a', $result[0]->Name);
 	}
 }
