@@ -5,8 +5,9 @@ namespace Objection\Utils;
 use Objection\LiteObject;
 use Objection\LiteSetup;
 use Objection\Enum\AccessRestriction;
-use PHPUnit\Framework\TestCase;
+use Objection\Exceptions\ReadOnlyPropertyException;
 
+use PHPUnit\Framework\TestCase;
 
 /**
  * @property int	$PropInt
@@ -395,6 +396,13 @@ class ArrayParserTest extends TestCase
 
 		$this->assertSame(5, $o->PropInt);
 		$this->assertSame(0, $o->PropGetOnly);
+	}
+
+	public function test_fromArrayFiltered_IgnoreFlagIsFalse_GetOnlyPropertyNotIgnored()
+	{
+		$this->expectException(ReadOnlyPropertyException::class);
+		$o = new TestObject_ArrayParser();
+		ArrayParser::fromArrayFiltered($o, ['PropGetOnly' => "5"], false);
 	}
 
 	public function test_fromArrayFiltered_FromArrayStrictOverridden_OverrideApplied()

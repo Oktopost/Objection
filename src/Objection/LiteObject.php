@@ -97,7 +97,9 @@ abstract class LiteObject
 	 * @deprecated Strict, but the name does not say so. For DB rows and other sources that may gain
 	 * 	fields use fromArrayFiltered() (preferred, safe when a column is added). Use fromArrayStrict()
 	 * 	only when strict validation of the source is really needed. Subclasses that customize hydration
-	 * 	should override fromArrayStrict(), which every hydration path goes through.
+	 * 	should override fromArrayStrict(), which every hydration path goes through, and call
+	 * 	parent::fromArrayStrict() from it, never fromArray(): fromArray() calls fromArrayStrict(),
+	 * 	so the override would recurse forever.
 	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
 	 * @return static
@@ -109,6 +111,10 @@ abstract class LiteObject
 
 	/**
 	 * Hydrate declared fields and throw on an unknown source key.
+	 *
+	 * Every hydration path (fromArray, fromArrayFiltered, the all* methods) goes through this method,
+	 * so this is the one to override. An override must call parent::fromArrayStrict(), not
+	 * parent::fromArray() or $this->fromArray(): those call back into this method and recurse forever.
 	 *
 	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
